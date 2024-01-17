@@ -1,4 +1,5 @@
 
+import 'package:animations/widgets/title.dart';
 import 'package:animations/widgets/trip_list.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,10 @@ class CustomBackground extends StatelessWidget {
         children: [
           ClipPath(
             clipper: BackgroundImageClipper(),
-            child: Container(height: 200, color: Colors.green),
+            child: Container(height: 200, color: Color.fromARGB(255, 134, 177, 184),
+            child:Center(child: TitleAnimation()) ,
+
+            ),
           ),
           Expanded(child: TripList())
        //  AnimationControllerPrac()
@@ -26,16 +30,11 @@ class BackgroundImageClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-    path.lineTo(0, size.height);
-
-    var curXPos = 0.0;
-    var curYPos = size.height;
-    var increment = size.width / 40;
-    while (curXPos < size.width) {
-      curXPos += increment;
-      curYPos = curYPos == size.height ? size.height - 30 : size.height;
-      path.lineTo(curXPos, curYPos);
-    }
+ path.lineTo(0, size.height);
+    path.quadraticBezierTo(
+        size.width / 4, size.height - 40, size.width / 2, size.height - 20);
+    path.quadraticBezierTo(
+        3 / 4 * size.width, size.height, size.width, size.height - 30);
     path.lineTo(size.width, 0);
     return path;
   }

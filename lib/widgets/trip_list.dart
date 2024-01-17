@@ -42,18 +42,28 @@ class _TripListState extends State<TripList> {
   }
 
   Widget buildTile(Trips trips) {
-    return ListTile(
-        title: Column(
-          children: [Text("${trips.night} nights")],
-        ),
-        leading: Image.asset(trips.imgs),
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TripDetails(trip: trips,),
-              ));
-        });
+    return Column(
+      children: [
+        ListTile(
+            title: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("${trips.night} nights",style: TextStyle(fontWeight: FontWeight.w400,color: Color.fromARGB(255, 70, 132, 72))),
+                SizedBox(height: 10,),
+                Text("travel to ${trips.title}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18),)
+              ],
+            ),
+            leading: Image.asset(trips.imgs),
+            trailing: Text(trips.price,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 15),),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TripDetails(trip: trips,),
+                  ));
+            }),
+            SizedBox(height: 20,)
+      ],
+    );
   }
 
   @override
