@@ -19,11 +19,13 @@ class TripDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             ClipRRect(
-              child: Image.asset(
-                "${trip.imgs}",
-                height: 360,
-                fit: BoxFit.cover,
-                alignment: Alignment.topCenter,
+              child: Hero(tag: 'location-imgs-${trip.imgs}',
+                child: Image.asset(
+                  "${trip.imgs}",
+                  height: 360,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
+                ),
               ),
             ),
             SizedBox(height: 30),

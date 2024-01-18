@@ -9,18 +9,19 @@ class CustomBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          ClipPath(
-            clipper: BackgroundImageClipper(),
-            child: Container(height: 200, color: Color.fromARGB(255, 134, 177, 184),
-            child:Center(child: TitleAnimation()) ,
-
+    body: Column(
+          children: [
+            ClipPath(
+              clipper: BackgroundImageClipper(),
+              child: Container(height: 200, color: Color.fromARGB(255, 134, 177, 184),
+              child:Center(child: TitleAnimation()) ,
+    
+              ),
             ),
-          ),
-          Expanded(child: TripList())
-       //  AnimationControllerPrac()
-        ],
+            Expanded(child: TripList())
+         //  AnimationControllerPrac()
+          ],
+      
       ),
     );
   }

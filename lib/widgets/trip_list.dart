@@ -11,7 +11,7 @@ class TripList extends StatefulWidget {
 
 class _TripListState extends State<TripList> {
   List<Widget> tripTiles = [];
-  final GlobalKey _listKey = GlobalKey();
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
   void _addTrips() {
     List<Trips> trips = [
@@ -24,20 +24,26 @@ class _TripListState extends State<TripList> {
           title: "delhi",
           night: "3",
           price: "\$50",
-          imgs: "assets/images/flower.png"),
+          imgs: "assets/images/moon.png"),
       const Trips(
           title: "pune",
           night: "2",
           price: "\$50",
-          imgs: "assets/images/flower.png"),
+          imgs: "assets/images/pinkforest.png"),
       const Trips(
           title: "banglore",
           night: "2",
           price: "\$50",
-          imgs: "assets/images/flower.png")
+          imgs: "assets/images/girl.png")
     ];
+    Future ft = Future(() {});
     for (var trip in trips) {
-      tripTiles.add(buildTile(trip));
+      ft = ft.then((value) {
+        return Future.delayed(Duration(seconds:1), () {
+              tripTiles.add(buildTile(trip));
+      _listKey.currentState!.insertItem(tripTiles.length - 1);
+        });
+      });
     }
   }
 
@@ -45,40 +51,73 @@ class _TripListState extends State<TripList> {
     return Column(
       children: [
         ListTile(
-            title: Column(crossAxisAlignment: CrossAxisAlignment.start,
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${trips.night} nights",style: TextStyle(fontWeight: FontWeight.w400,color: Color.fromARGB(255, 70, 132, 72))),
-                SizedBox(height: 10,),
-                Text("travel to ${trips.title}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18),)
+                Text("${trips.night} nights",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromARGB(255, 70, 132, 72))),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "travel to ${trips.title}",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                )
               ],
             ),
-            leading: Image.asset(trips.imgs),
-            trailing: Text(trips.price,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 15),),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Hero(
+                tag: 'location-img-${trips.imgs}',
+                child: Image.asset(
+                  trips.imgs,
+                  fit: BoxFit.cover,
+                  height: 150,
+                  width: 100,
+                ),
+              ),
+            ),
+            trailing: Text(
+              trips.price,
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+            ),
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TripDetails(trip: trips,),
+                    builder: (context) => TripDetails(
+                      trip: trips,
+                    ),
                   ));
             }),
-            SizedBox(height: 20,)
+        SizedBox(
+          height: 20,
+        )
       ],
     );
   }
 
   @override
   void initState() {
-    _addTrips();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _addTrips();
+    });
+
     super.initState();
   }
 
+  Tween<Offset> offset = Tween(begin: Offset(0, 1), end: Offset(0, 0));
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        key: _listKey,
-        itemCount: tripTiles.length,
-        itemBuilder: (context, index) {
-          return tripTiles[index];
-        });
+    return AnimatedList(
+      key: _listKey,
+      initialItemCount: tripTiles.length,
+      itemBuilder: (context, index, animation) {
+        return SlideTransition(
+            child: tripTiles[index], position: animation.drive(offset));
+      },
+    );
   }
 }

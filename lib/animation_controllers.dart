@@ -12,13 +12,14 @@ class _AnimationControllerPracState extends State<AnimationControllerPrac>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation _colorAnimation;
+ late Animation<double?> _sizeAnimation;
   bool isFav = false;
   @override
   void initState() {
     _animationController =
-        AnimationController(duration: Duration(microseconds: 500), vsync: this);
-    _colorAnimation = ColorTween(begin: Colors.grey, end: Colors.red)
-        .animate(_animationController);
+        AnimationController(duration: Duration(microseconds: 1), vsync: this);
+    _colorAnimation = ColorTween(begin: Colors.grey, end: Colors.red) .animate(_animationController);
+    _sizeAnimation=Tween<double>(begin:30.0, end: 40).animate(_animationController);
 
     _animationController.addListener(() {
       print("value od aniimation controller${_animationController.value}");
@@ -44,25 +45,23 @@ class _AnimationControllerPracState extends State<AnimationControllerPrac>
 
   @override
   Widget build(BuildContext context) {
-    return 
-     Center(
-        child: Container(
-          child: AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, child) {
-              return InkWell(
-                onTap: () {
-                  isFav
-                      ? _animationController.reverse()
-                      : _animationController.forward();
-                },
-                child: Icon(Icons.favorite,
-                    size: 50, color: _colorAnimation.value),
-              );
-            },
-          ),
+    return Center(
+      child: Container(
+        child: AnimatedBuilder(
+          animation: _animationController,
+          builder: (context, child) {
+            return InkWell(
+              onTap: () {
+                isFav
+                    ? _animationController.reverse()
+                    : _animationController.forward();
+              },
+              child:
+                  Icon(Icons.favorite, size: _sizeAnimation.value, color: _colorAnimation.value),
+            );
+          },
         ),
-      
+      ),
     );
   }
 }
