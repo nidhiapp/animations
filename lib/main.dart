@@ -1,6 +1,7 @@
-import 'package:animations/animation_controllers.dart';
-import 'package:animations/custom_background.dart';
-import 'package:animations/sandbox.dart';
+
+import 'package:animations/simple_animations/3d_animation.dart';
+import 'package:animations/simple_animations/blue_cont_anim.dart';
+import 'package:animations/simple_animations/two_half_circles.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: CustomBackground(),
+      home: ThreeDAnimations(),
     );
   }
 }
